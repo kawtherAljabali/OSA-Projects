@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vanilla JS Form Validation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <style type="text/css">
+      * {
+    box-sizing: border-box;
+}
+
+body {
+    color: #111;
+    background-color: #e5ecef;
+    font: 400 16px/1.5 Helvetica, Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;    
+}
+
+.container {
+    width: 100%;
+    max-width: 1030px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+.box {
+    max-width: 600px;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(161, 161, 161, .5);
+    background-color: #fff;
+    margin: 0 auto;
+}
+
+.box__header,
+.box__footer,
+#errorMsg {
+    padding: 15px 30px;
+}
+
+.box__header {
+    border-bottom: 1px solid #ddd;
+}
+
+.box__footer {
+    border-top: 1px solid #ddd;
+}
+
+.box__header h1 {
+    margin: 0;
+    line-height: 1;
+}
+
+.box__main {
+    padding: 30px;
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* Button Styles */
+
+.button {
+    height: 40px;
+    padding: 0 30px;
+    border: 0;
+    border-radius: 4px;
+    background-color: #999;
+    color: #fff;
+    font: 400 16px/40px Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #777;
+}
+
+/* Form Styles */
+
+.form__group {
+    display: flex;
+    align-items: flex-start;
+}
+
+.form__group:not(:last-child) {
+    margin-bottom: 15px;
+}
+
+.form__group-right {
+    width: 100%;
+    overflow: hidden;
+}
+
+.form__group p.help-text {
+    margin: 5px 0 0;
+    font-size: 12px;
+    font-style: italic;
+    color: #999;
+    line-height: 1;
+}
+
+.form__label {
+    width: 200px;
+    display: inline-block;
+    text-align: right;
+    margin-right: 10px;
+    margin-top: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1;    
+}
+
+.form__control {
+    width: 100%;
+    height: 40px;
+    line-height: 38px;
+    border: 1px solid #999;
+    border-radius: 4px;
+    padding: 6px 12px;
+    color: #111;
+    font: 400 16px/1.5 Helvetica, Arial, sans-serif;
+}
+
+.form__control:focus,
+.button:focus {
+    outline: none;
+}
+
+#userPhoto {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+    padding: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#slider {
+	overflow: hidden;
+}
+#slider figure {
+	position: relative;
+  width: 500%;
+	margin: 0;
+	left: 0;
+	animation: 20s slider infinite;
+}
+#slider figure img {
+	width: 20%;
+  float: left;
+  height: 550px;
+
+}
+
+@keyframes slider {
+	0% {
+		left: 0;
+	}
+	20% {
+		left: 0;
+	}
+	25% {
+		left: -100%;
+	}
+	45% {
+		left: -100%;
+	}
+	50% {
+		left: -200%;
+	}
+	70% {
+		left: -200%;
+	}
+	75% {
+		left: -300%;
+	}
+	95% {
+		left: -300%;
+	}
+	100% {
+		left: -400%;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[for="userPhoto"] {
+    width: 100%;
+    margin: 0;
+    border: 1px solid #999;
+    border-radius: 4px;
+    height: 40px;
+    line-height: 38px;
+    cursor: pointer;
+    display: block;
+    padding: 0 12px;
+    color: #999;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;    
+}
+
+[for="userPhoto"]:hover {
+    background-color: #f8f8f8;
+}
+
+.userPhotoPreview {
+    margin-top: 10px;
+}
+
+.select-widget {
+    position: relative;
+}
+
+.select-widget::after {
+    content: '\2193';
+    color: #999;
+    font-size: 14px;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    line-height: 38px;
+    text-align: center;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+}
+
+.select-widget select {
+    -webkit-appearance: none;
+}
+
+.select-widget select [selected] {
+    color: #999;
+}
+
+#errorsList {
+    border-top: 1px solid #ddd;
+    background-color: rgba(255, 0, 0, .1);
+    padding: 20px 30px 20px 45px;
+    margin: 0;   
+}
+
+#errorsList li:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #999;
+    font: 400 16px/1.5 Helvetica, Arial, sans-serif;
+    opacity: 1;
+}
+::-moz-placeholder { /* Firefox 19+ */
+    color: #999;
+    font: 400 16px/1.5 Helvetica, Arial, sans-serif;
+    opacity: 1;
+}
+:-ms-input-placeholder { /* IE 10+ */
+    color: #999;
+    font: 400 16px/1.5 Helvetica, Arial, sans-serif;
+    opacity: 1;
+}
+:-moz-placeholder { /* Firefox 18- */
+    color: #999;
+    font: 400 16px/1.5 Helvetica, Arial, sans-serif;
+    opacity: 1;
+}
+
+/* Media Queries */
+@media (max-width: 600px) {
+    .form__group {
+        flex-direction: column;
+    }
+
+    .form__label {
+        width: 100%;
+        text-align: left;
+        margin: 0 0 7px;
+    }    
+}
+
+@media (max-width: 480px) {
+    .box__header,
+    .box__footer,
+    .box__main {
+        padding: 15px;
+    }
+
+    #errorsList {
+        padding: 15px 15px 15px 30px;
+    }
+}
+    </style>
+</head>
+<body>
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <img src="img/lllo.png" alt="logo" width="100px"style="margin-left:140px; " >
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="index.html" >Home<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="to-do.html" style="color:black; font-family:lato_b;font-size: 17px;">Homework Shedule</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="newcal.html"style="color:black;font-family:lato_b;font-size: 17px;">Calculator</a>
+            </li>
+            <li class="nav-item " style="margin-left: 500px;">
+                <input type="color" id="color">
+                <button id="bt" onclick="changecolor()" style="background-color: #46C4E4;color: #666666;border: none;">changeColor</button>
+                    <select name="font_family" id="font_family" onchange="changeFontStyle (this)" style="border: none;background-color:#46C4E4;color: #666666;">
+                        <option value="Arial" selected>Arial</option>
+                        <option value="Verdana" selected>Verdana</option>
+                        <option value="Helvetica" selected>Helvetica</option>
+                        <option value="Times New Roman" selected>Times New Roman</option>
+                        <option value="Courier New" selected>Courier New</option>
+                    </select>
+                    <select name="font_size" id="font_size"onchange="onsize(this)" style="border:none; background-color:#46C4E4 ;color: #666666;" >
+                        <option value="8pt">8pt</option>
+                        <option value="10pt">10pt</option>
+                        <option value="12pt" selected>12pt</option>
+                        <option value="14pt">14pt</option>
+                        <option value="16pt">16pt</option>
+                        <option value="29pt">29pt</option>
+                    </select>
+              </li>
+          </ul>
+        </div>
+      </nav>
+          <!--navbar-->
+    
+          <!--Slide Img-->
+    
+          <div id="slider">
+            <figure>
+              <img src="img/im2.jpg">
+              <img src="img/img1.jpg">
+                    <img src="img/img4.jpg">
+                    <img src="img/img5.jpg">
+              <img src="img/img6.jpg">
+        
+            </figure>
+          </div>
+        
+        
+        <br><br><br>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="container">
+        <div class="box">
+            <form class="form box" name="signupForm" id="signupForm" autocomplete="off">
+                <div class="box__header">
+                    <h1>Signup Form</h1>
+                </div>
+                <div class="box__main">
+                    <div class="form__group">
+                        <!-- Username Field -->
+                        <label class="form__label" for="userName">Username</label>
+                        <div class="form__group-right">
+                            <input class="form__control hasBorder" type="text" name="userName" id="userName" placeholder="e.g. thesaabbir">
+                        </div>
+                    </div>
+                    <div class="form__group">
+                        <!-- Email Field -->
+                        <label class="form__label" for="userEmail">Email Address</label>
+                        <div class="form__group-right">
+                            <input class="form__control hasBorder" type="text" name="userEmail" id="userEmail" placeholder="e.g. thesaabbir@gmail.com">
+                        </div>
+                    </div>
+                    <div class="form__group">
+                        <!-- Password -->
+                        <label class="form__label" for="userPassword">Password</label>
+                        <div class="form__group-right">
+                            <input class="form__control hasBorder" type="password" name="userPassword" id="userPassword" placeholder="e.g. aA9!bB8@">
+                        </div>
+                    </div>
+                    <div class="form__group">
+                        <!-- Confirm Password -->
+                        <label class="form__label" for="userPasswordConfirm">Confirm Password</label>
+                        <div class="form__group-right">
+                            <input class="form__control hasBorder" type="password" name="userPasswordConfirm" id="userPasswordConfirm" placeholder="Re-enter password">
+                        </div>
+                    </div>
+                    <div class="form__group">
+                        <!-- Phone Number -->
+                        <label class="form__label" for="userPhoneNumber">Phone Number</label>
+                        <div class="form__group-right">
+                            <input class="form__control hasBorder" type="text" name="userPhoneNumber" id="userPhoneNumber" placeholder="e.g. 017-89-124-139">
+                        </div>
+                    </div>
+                    <div class="form__group">
+                        <!-- Date Of Birth -->
+                        <label class="form__label" for="userDOB">Date of birth</label>
+                        <div class="form__group-right">
+                            <input class="form__control hasBorder" type="text" name="userDOB" id="userDOB" placeholder="e.g. 21-Sep-1994">
+                        </div>
+                    </div>
+                    <div class="form__group">
+                        <!-- File Type -->
+                        <label class="form__label">Upload Photo</label>
+                        <div class="form__group-right">
+                            <label class="hasBorder" for="userPhoto" id="userPhotoLabel">Choose photo</label>
+                            <p class="help-text">We accept only jpeg/jpg and png format</p>
+                            <input class="form__control" type="file" name="userPhoto" id="userPhoto">
+                        </div>
+                    </div>
+                </div>
+                <div class="box__footer">
+                    <div class="form__submit text-right">
+                        <!-- Submit Button -->
+                        <input class="button" type="submit" value="Submit" id="formSubmitButton">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--<script src="app.js"></script>-->
+    <script type="text/javascript">
+      ;(function(window, document){ // Start IIFE
+'use strict';
+
+// Rules for validation
+const rules = {
+    userName: { 
+        required: true,
+        minlength: 3,
+        maxlength: 10
+    },
+    userEmail: {
+        required: true,
+        pattern: /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
+        validEmailDomains: ['gmail.com', 'yahoo.com', 'outlook.com', 'aol.com', 'mail.ru'],
+        slangWords: ['LOL', 'OMG', 'WTF', 'LMAO', 'RIP', 'FUCK']     
+    },
+    userPassword: {
+        required: true,
+        minlength: 8
+    },
+    userPhoneNumber: {
+        required: true,
+        pattern: /^\d{3}-?\d{2}-?\d{3}-?\d{3}$/
+    },
+    userDOB: {
+        required: true,
+        pattern: /^\d\d?-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\d{4}$/
+    },
+    userPhoto: {
+        required: true,
+        accept: ['image/jpeg', 'image/png'],
+        size: (1024 * 100)
+    }
+}
+
+const signupForm        = document.querySelector('#signupForm')
+const hasBorderFields   = signupForm.querySelectorAll('.hasBorder')
+const userPhotoLabel    = signupForm.querySelector('#userPhotoLabel')
+const boxFooter         = document.querySelector('.box__footer')
+let errors, errorFields
+
+function init() {
+    errors = []
+    errorFields = []
+}
+
+function addErrorField(field) {
+    if (!errorFields.includes(field)) {
+        errorFields.push(field)
+    }
+}
+
+function validateUsername() {
+    if (rules.userName.required) {
+        const userNameEl = signupForm.elements.userName
+        const userNameVal = userNameEl.value.trim().toLowerCase()
+
+        if (userNameVal === '') {
+            errors.push(`Username is <strong>required</strong>. You can't leave it empty.`)
+            addErrorField(userNameEl)
+        } else if (!isNaN(userNameVal.charAt(0))) {
+            errors.push(`Username can't start with a number (<strong>${userNameVal.charAt(0)}</strong>)`)
+            addErrorField(userNameEl)
+        } else if (userNameVal.length < rules.userName.minlength) {
+            errors.push(`Username must be at least <strong>${rules.userName.minlength}</strong> characters.`)
+            addErrorField(userNameEl)
+        } else if (userNameVal.length > rules.userName.maxlength) {
+            errors.push(`Username can contain maximum <strong>${rules.userName.maxlength}</strong> characters.`)
+            addErrorField(userNameEl)
+        } else if (userNameVal.includes(' ')) {
+            errors.push(`Username can't contain a <strong>space</strong>.`)
+            addErrorField(userNameEl)
+        }           
+    }
+}
+
+function validateEmail() {
+    if (rules.userEmail.required) {
+        const userEmailEl = signupForm.elements.userEmail
+        const userEmailVal = userEmailEl.value.trim().toLowerCase()
+        const userEmailName = userEmailVal.slice(0, userEmailVal.indexOf('@'))
+        const userEmailDomain = userEmailVal.slice(userEmailVal.indexOf('@') + 1)
+        const searchSlangWord = rules.userEmail.slangWords.filter(function(slangWord) {
+            return userEmailName.includes(slangWord.toLowerCase())
+        })
+        const isEmailValid = rules.userEmail.pattern.test(userEmailVal)
+        
+        if (userEmailVal === '') {
+            errors.push(`Email address is <strong>mandatory</strong>. You can't leave it empty.`)
+            addErrorField(userEmailEl)
+        } else if (!isEmailValid) {
+            errors.push(`<strong>${userEmailVal}</strong> is not a valid email address.`)
+            addErrorField(userEmailEl)
+        } else if (!rules.userEmail.validEmailDomains.includes(userEmailDomain)) {
+            errors.push(`<strong>${userEmailDomain}</strong> is not a valid email domain.`)
+            addErrorField(userEmailEl)
+        } else if (searchSlangWord.length) {
+            errors.push(`Your email username contains slang word <strong>${searchSlangWord.join(', ')}</strong>. Which we do not accept.`)
+            addErrorField(userEmailEl)
+        }
+    }
+}
+
+function validatePassword() {
+    if (rules.userPassword.required) {
+        const userPasswordEl = signupForm.elements.userPassword
+        const userPasswordVal = userPasswordEl.value.trim()
+
+        if (!userPasswordVal.length) {
+            errors.push(`Password is <strong>required</strong>. You can't leave it empty.`)
+            addErrorField(userPasswordEl)
+        } else if (userPasswordVal.length < rules.userPassword.minlength) {
+            errors.push(`Password must be at least <strong>8</strong> characters long.`)
+            addErrorField(userPasswordEl)
+        } else if (
+            !(/[a-z]/.test(userPasswordVal) &&
+            /[A-Z]/.test(userPasswordVal) &&
+            /[\d]/.test(userPasswordVal) &&
+            /[\W]/.test(userPasswordVal))
+        ) {
+            errors.push(`Password must include at least <strong>1</strong> lowercase letter, <strong>1</strong> uppercase letter, <strong>1</strong> digit, and <strong>1</strong> special character.`)
+            addErrorField(userPasswordEl)
+        }
+    }
+}
+
+function validatePasswordConfirm() {
+    const userPasswordConfirmEl = signupForm.elements.userPasswordConfirm
+    const userPasswordConfirmVal = userPasswordConfirmEl.value.trim()
+
+    if (signupForm.elements.userPassword.value.trim() !== userPasswordConfirmVal) {
+        errors.push(`Those passwords didn't <strong>match</strong>. Try again.`)
+        addErrorField(userPasswordConfirmEl)
+    }
+}
+
+function validatePhoneNumber() {
+    if (rules.userPhoneNumber.required) {
+        const userPhoneNumberEl = signupForm.elements.userPhoneNumber
+        const userPhoneNumberVal = userPhoneNumberEl.value.trim()
+
+        if (!userPhoneNumberVal.length) {
+            errors.push(`Phone number is <strong>mandatory</strong>. You can't leave it empty.`)
+            addErrorField(userPhoneNumberEl)
+        } else if (userPhoneNumberVal.length < 11) {
+            errors.push(`The phone number must be at least <strong>11</strong> digit long.`)
+            addErrorField(userPhoneNumberEl)
+        } else if (!rules.userPhoneNumber.pattern.test(userPhoneNumberVal)) {
+            errors.push(`The phone number format is incorrect. We accept <strong>017-89-124-139</strong> or <strong>01789124139</strong> format.`)
+            addErrorField(userPhoneNumberEl)
+        }
+    }
+}
+
+function validateDOB() {
+    if (rules.userDOB.required) {
+        const userDOBEl = signupForm.elements.userDOB
+        const userDOBVal = userDOBEl.value.trim()
+
+        if (!userDOBVal.length) {
+            errors.push(`Date of birth is <strong>required</strong>. You can't leave it empty.`)
+            addErrorField(userDOBEl)
+        } else if (!rules.userDOB.pattern.test(userDOBVal)) {
+            errors.push(`The date format is incorrect. We accept <strong>21-Sep-1994</strong> in this format.`)
+            addErrorField(userDOBEl)
+        }            
+    }
+}
+
+function validateFile() {
+    if (rules.userPhoto.required) {
+        const userPhotoEl = signupForm.elements.userPhoto
+        const userPhotos = userPhotoEl.files
+        const userPhoto = userPhotoEl.files[0]
+
+        function returnFileSize(number) {
+            if ( number < 1024 ) {
+                return number.toFixed(1) + 'Bytes';
+            } else if ( number >= 1024 && number < (1024 * 1024) ) {
+                return ( number / 1024 ).toFixed(1) + 'KB';
+            } else if ( number >= (1024 * 1024) ) {
+                return ( number / (1024 * 1024).toFixed(1) ) + 'MB';
+            }
+        }        
+
+        if (userPhotos.length === 0 || userPhoto === undefined) {
+            errors.push(`You didn't <strong>choose</strong> any photo.`)
+            errorFields.push(userPhotoLabel)
+        } else if (!rules.userPhoto.accept.includes(userPhoto.type)) {
+            errors.push(`The file you selected (${userPhoto.name}) is not a valid type. Valid file types are: <strong>${rules.userPhoto.accept.join(', ')}</strong>.`)
+            errorFields.push(userPhotoLabel)
+        } else if (userPhoto.size > rules.userPhoto.size) {
+            errors.push(`Your file size (${returnFileSize(userPhoto.size)}) is too large. The maximum allowed file size is <strong>100KB</strong>.`)
+            errorFields.push(userPhotoLabel)
+        }
+    }
+}
+
+function hideError() {
+    const errorsList = signupForm.querySelector('#errorsList')
+    if (errorsList) {
+        errorsList.remove()
+    }
+
+    hasBorderFields.forEach(field => field.style.borderColor = '')
+}
+
+function showError() {
+    const ol = document.createElement('ol')
+    ol.setAttribute('id', 'errorsList')
+    errorFields.forEach(field => field.style.borderColor = 'red')
+    errors.forEach(function(error) {
+        const li = document.createElement('li')
+        li.innerHTML = error
+        ol.appendChild(li)
+    })
+    boxFooter.parentNode.insertBefore(ol, boxFooter)
+}
+
+function validateForm(event) {
+    init()
+    hideError()
+    validateUsername()
+    validateEmail()
+    validatePassword()
+    validatePasswordConfirm()
+    validatePhoneNumber()
+    validateDOB()
+    validateFile()
+    showError()
+
+    if (errors.length !== 0) {
+        event.preventDefault()
+    }
+}
+
+// Listen for change event on userPhoto
+signupForm.elements.userPhoto.onchange = function(event) {
+    userPhotoLabel.textContent = event.target.files[0].name
+}
+
+// Listen for blur event on userPhoneNumber
+signupForm.elements.userPhoneNumber.onblur = function(event) {
+    event.target.value = event.target.value.replace(/^(\d{3})-?(\d{2})-?(\d{3})-?(\d{3})$/, '$1-$2-$3-$4')
+}
+
+// Listen for submit event on signupForm
+signupForm.addEventListener('submit', validateForm)
+
+})(window, document); // End of IIFE
+
+    </script>
+
+
+
+
+
+
+<footer>
+    <div style="margin-top: 500px; background-color:#666666;height:150px; color: white;text-align: center; padding-top: 20px;">  
+        
+        Created by Marina, Kawthar and Tala
+    </div>
+
+
+</footer>
+</body>
+</html>
